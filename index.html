@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="theme-color" content="#FFF3F6">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Записная книжка</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&family=Playfair+Display:wght@600&display=swap">
+<style>
+:root{--bg:#FFF3F6;--card:#fff;--ink:#3B2430;--mut:#7A5668;--bd:#F5D9E3;--seg:#F8E3EC;--ac:#B5577A;--act:#B5577A;--del:#B3372F;--delb:#F0C9CF;--fl:#E8A6C0;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#26171F;--card:#341F2A;--ink:#FBE9F0;--mut:#D3B0C1;--bd:#4D2E3D;--seg:#3F2633;--act:#F0A9C4;--del:#F0A097;--delb:#6B3A3F;--fl:#8C4A68}}
+:root[data-theme="dark"]{--bg:#26171F;--card:#341F2A;--ink:#FBE9F0;--mut:#D3B0C1;--bd:#4D2E3D;--seg:#3F2633;--act:#F0A9C4;--del:#F0A097;--delb:#6B3A3F;--fl:#8C4A68}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Nunito,system-ui,sans-serif}
+.fl{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}.fl g{fill:var(--fl)}
+#app{position:relative;z-index:1;max-width:430px;margin:0 auto;padding:0 0 120px}
+.h{padding:28px 20px 8px}.h h1{margin:0;font-family:"Playfair Display",serif;font-size:32px;font-weight:600}.h p{margin:4px 0 0;font-size:14px;color:var(--mut)}
+.back{background:none;border:0;color:var(--act);font:600 15px Nunito,sans-serif;min-height:44px;padding:0 20px}
+.seg{display:flex;gap:4px;margin:12px 20px;padding:4px;background:var(--seg);border-radius:18px}
+.seg button{flex:1;min-height:44px;border:0;background:none;border-radius:14px;font:600 14px Nunito,sans-serif;color:var(--mut)}
+.seg .on{background:var(--card);color:var(--ink)}
+.c{background:var(--card);border-radius:22px;padding:14px 16px;margin:0 20px 12px;border:1px solid var(--bd)}
+.c b{font-family:"Playfair Display",serif;font-size:17px;font-weight:600}.c p{margin:4px 0 0;font-size:13px;color:var(--mut);white-space:pre-line}
+.c p.tx{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.a{display:flex;gap:8px;margin-top:12px}
+.a button{flex:1;min-height:44px;border-radius:22px;font:600 14px Nunito,sans-serif;border:1px solid var(--ac);background:var(--ac);color:#fff}
+.a .g{background:var(--card);color:var(--act)}.a .d{background:var(--card);color:var(--del);border-color:var(--delb);flex:0 0 100px}.a .d.w{flex:1}
+.ck{display:flex;gap:10px;align-items:center;min-height:40px;font-size:15px}.ck input{width:20px;height:20px;accent-color:var(--ac)}.ck.dn span{text-decoration:line-through;color:var(--mut)}
+input.t,textarea.t{width:100%;border:1px solid var(--bd);background:var(--card);color:var(--ink);border-radius:16px;padding:12px;font:16px Nunito,sans-serif;min-height:44px}
+textarea.t{min-height:110px;resize:vertical}
+.q{margin:12px 20px;background:var(--card);border:1px solid var(--bd);border-radius:22px;padding:12px}
+.q input{border:0;outline:0;width:100%;min-height:44px;background:none;color:var(--ink);font:16px Nunito,sans-serif}
+.ch{display:flex;gap:8px;flex-wrap:wrap}.ch button{min-height:44px;padding:0 14px;border-radius:22px;border:1px solid var(--bd);background:var(--card);color:var(--ink);font:600 14px Nunito,sans-serif}
+.ch .on{background:var(--ac);border-color:var(--ac);color:#fff}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:0 20px}
+.t2{background:var(--card);border:1px solid var(--bd);border-radius:22px;padding:16px;min-height:76px;text-align:left;color:var(--ink);font:inherit}
+.t2 b{display:block;font-family:"Playfair Display",serif;font-size:17px;font-weight:600;margin-bottom:4px}.t2 span{font-size:12px;color:var(--mut)}
+.l{margin:20px 20px 10px;font-size:13px;font-weight:700;color:var(--mut);letter-spacing:.04em}
+.em{margin:28px 20px;text-align:center;color:var(--mut)}
+.fab{position:fixed;right:max(20px,calc(50% - 195px));bottom:calc(88px + env(safe-area-inset-bottom,0px));z-index:5;width:56px;height:56px;border-radius:28px;background:var(--ac);color:#fff;border:0;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 16px rgba(120,50,80,.3)}
+nav{position:fixed;left:0;right:0;bottom:0;z-index:6;background:var(--card);border-top:1px solid var(--bd);padding:8px 4px calc(10px + env(safe-area-inset-bottom,0px))}
+nav div{display:flex;max-width:430px;margin:0 auto}
+nav button{flex:1;min-height:44px;display:flex;flex-direction:column;align-items:center;gap:4px;background:none;border:0;font:600 11px Nunito,sans-serif;color:var(--mut)}
+nav .on{color:var(--act)}
+#sh{position:fixed;inset:0;z-index:10;background:rgba(40,15,30,.4);display:flex;align-items:flex-end;justify-content:center}
+#sh[hidden]{display:none}
+.sb{width:100%;max-width:430px;background:var(--bg);border-radius:24px 24px 0 0;padding:20px 20px calc(20px + env(safe-area-inset-bottom,0px));display:grid;gap:12px}
+.sb h2{margin:0;font-family:"Playfair Display",serif;font-size:22px;font-weight:600}
+.sb .a{margin:0}
+#ts{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(92px + env(safe-area-inset-bottom,0px));z-index:12;background:var(--ink);color:var(--bg);border-radius:22px;padding:10px 16px;font-size:14px;display:flex;gap:12px;align-items:center;max-width:90%}
+#ts[hidden]{display:none}#ts button{background:none;border:0;color:inherit;font:700 14px Nunito,sans-serif;text-decoration:underline;min-height:32px}
+</style>
+</head>
+<body>
+<svg class="fl" viewBox="0 0 390 844" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+<g opacity=".4" transform="translate(345 60) scale(3)"><ellipse cy="-14" rx="9" ry="14"/><ellipse cy="-14" rx="9" ry="14" transform="rotate(72)"/><ellipse cy="-14" rx="9" ry="14" transform="rotate(144)"/><ellipse cy="-14" rx="9" ry="14" transform="rotate(216)"/><ellipse cy="-14" rx="9" ry="14" transform="rotate(288)"/><circle r="6" fill="#F3CFA0"/></g>
+<g opacity=".35" transform="translate(30 780) scale(3.4)"><ellipse cy="-14" rx="9" ry="14"/><ellipse cy="-14" rx="9" ry="14" transform="rotate(72)"/><ellipse cy="-14" rx="9" ry="14" transform="rotate(144)"/><ellipse cy="-14" rx="9" ry="14" transform="rotate(216)"/><ellipse cy="-14" rx="9" ry="14" transform="rotate(288)"/><circle r="6" fill="#F3CFA0"/></g>
+<g opacity=".3" transform="translate(350 470) scale(1.6)"><ellipse cy="-14" rx="9" ry="14"/><ellipse cy="-14" rx="9" ry="14" transform="rotate(72)"/><ellipse cy="-14" rx="9" ry="14" transform="rotate(144)"/><ellipse cy="-14" rx="9" ry="14" transform="rotate(216)"/><ellipse cy="-14" rx="9" ry="14" transform="rotate(288)"/><circle r="6" fill="#F3CFA0"/></g>
+</svg>
+<div id="app"></div>
+<nav><div id="nv"></div></nav>
+<div id="sh" hidden></div>
+<div id="ts" hidden></div>
+<script>
+const T={idea:['💡','Идея','Идеи'],recipe:['🍰','Рецепт','Рецепты'],book:['📚','Книга','Книги'],movie:['🎬','Фильм','Фильмы'],list:['✨','Список','Списки'],info:['🎀','Хранилище','Хранилище']};
+const SEG={recipe:[['new','Новые'],['book','Книга рецептов']],book:[['want','Хочу прочитать'],['done','Прочитано']],movie:[['want','Хочу посмотреть'],['done','Просмотрено']]};
+const ST={recipe:'new',book:'want',movie:'want'};
+const SV='width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"';
+const IC={home:'<path d="M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>',recipe:'<path d="M3 12h18a9 9 0 0 1-18 0zM8 8c0-2 2-2 2-4M14 8c0-2 2-2 2-4"/>',book:'<path d="M4 4h6a2 2 0 0 1 2 2v14a2 2 0 0 0-2-2H4zM20 4h-6a2 2 0 0 0-2 2v14a2 2 0 0 1 2-2h6z"/>',movie:'<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M8 5v14M16 5v14"/>',more:'<path d="M5 12h.01M12 12h.01M19 12h.01"/>'};
+const NAV=[['home','Главная'],['recipe','Рецепты'],['book','Книги'],['movie','Фильмы'],['more','Ещё']];
+const K='nb-v1';
+let S={items:[],view:'home',seg:{recipe:'new',book:'want',movie:'want'},sheet:null,qt:'idea',rc:0,undo:null};
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const fd=t=>new Date(t).toLocaleDateString('ru-RU',{day:'numeric',month:'long'});
+function load(){try{const r=localStorage.getItem(K);if(r){S.items=JSON.parse(r);return}}catch(e){}
+ const n=Date.now();
+ S.items=[{id:n,type:'recipe',title:'Шакшука с фетой',text:'Ссылка на рецепт',ts:n,status:'new'},{id:n+1,type:'book',title:'Маленькая жизнь',text:'Ханья Янагихара',ts:n,status:'want'},{id:n+2,type:'movie',title:'Прошлые жизни',text:'',ts:n,status:'want'},{id:n+3,type:'idea',title:'Завести отдельный блокнот для идей',text:'',ts:n,status:''}];save()}
+function save(){try{localStorage.setItem(K,JSON.stringify(S.items))}catch(e){}}
+function toast(m,u){const t=$('#ts');t.innerHTML=esc(m)+(u?'<button data-a="undo">Отменить</button>':'');t.hidden=false;clearTimeout(toast.h);toast.h=setTimeout(()=>t.hidden=true,5000)}
+function mv(it,l,c){return `<button class="${c||''}" data-a="move" data-id="${it.id}">${l}</button>`}
+function card(it){
+ let b='',sub='',tx=it.text?`<p class="tx">${esc(it.text)}</p>`:'';
+ if(it.type==='recipe')b=it.status==='book'?mv(it,'Вернуть в «Новые»','g'):mv(it,'В книгу рецептов');
+ if(it.type==='book')b=it.status==='done'?mv(it,'Вернуть в «Хочу»','g'):mv(it,'Прочитано');
+ if(it.type==='movie')b=it.status==='done'?mv(it,'Вернуть в «Хочу»','g'):mv(it,'Просмотрено');
+ sub=it.status==='done'?`<p>${it.type==='book'?'Прочитано':'Просмотрено'} ${fd(it.doneTs||it.ts)}</p>`:`<p>${T[it.type][0]} добавлено ${fd(it.ts)}</p>`;
+ let ls='';
+ if(it.type==='list')ls=(it.items||[]).map((x,i)=>`<label class="ck${x.d?' dn':''}"><input type="checkbox" data-ck="${it.id}:${i}" ${x.d?'checked':''}><span>${esc(x.t)}</span></label>`).join('')+`<input class="t" style="margin-top:8px" data-add="${it.id}" placeholder="Добавить пункт" aria-label="Добавить пункт">`;
+ return `<div class="c"><b>${esc(it.title)}</b>${sub}${tx}${ls}<div class="a">${b}<button class="d${b?'':' w'}" data-a="del" data-id="${it.id}">Удалить</button></div></div>`}
+function head(v){return `<div class="h"><h1>${T[v][2]} ${T[v][0]}</h1></div>`}
+function section(v){
+ let h=['idea','list','info'].includes(v)?`<button class="back" data-a="go" data-v="more">‹ Ещё</button>`:'';
+ h+=head(v);let L=S.items.filter(i=>i.type===v);
+ if(SEG[v]){const s=S.seg[v];h+=`<div class="seg">${SEG[v].map(x=>`<button class="${x[0]===s?'on':''}" data-a="seg" data-s="${x[0]}">${x[1]}</button>`).join('')}</div>`;L=L.filter(i=>i.status===s)}
+ h+=L.length?L.map(card).join(''):`<p class="em">Пока пусто. Нажмите «+», чтобы добавить 🌷</p>`;
+ return h+`<button class="fab" data-a="add" data-t="${v}" aria-label="Добавить"><svg ${SV}><path d="M12 5v14M5 12h14"/></svg></button>`}
+function cnt(t,s){return S.items.filter(i=>i.type===t&&(!s||i.status===s)).length}
+function home(){
+ const tiles=[['idea','Заметок',cnt('idea')],['recipe','Новых',cnt('recipe','new')],['book','Хочу прочитать',cnt('book','want')],['movie','Хочу посмотреть',cnt('movie','want')],['list','Списков',cnt('list')],['info','Записей',cnt('info')]];
+ const rec=S.items.slice(0,3).map(i=>`<div class="c"><b>${esc(i.title)}</b><p>${T[i.type][0]} ${T[i.type][1]}</p></div>`).join('');
+ return `<div class="h"><h1>Записная книжка 🌸</h1><p>Всё важное в одном месте</p></div>
+<div class="q"><input id="q" aria-label="Быстрая запись" placeholder="Что записать?"><div class="ch">${Object.keys(T).map(k=>`<button class="${k===S.qt?'on':''}" data-a="qt" data-t="${k}">${T[k][1]}</button>`).join('')}<button class="on" data-a="qadd">Записать</button></div></div>
+<div class="g2">${tiles.map(t=>`<button class="t2" data-a="go" data-v="${t[0]}"><b>${T[t[0]][2]} ${T[t[0]][0]}</b><span>${t[1]}: ${t[2]}</span></button>`).join('')}</div>
+${rec?`<div class="l">НЕДАВНО</div>${rec}`:''}`}
+function more(){return head('idea').replace(/<h1>.*<\/h1>/,'<h1>Ещё 🌷</h1>')+['idea','list','info'].map(v=>`<button class="c t2" style="display:block;width:calc(100% - 40px)" data-a="go" data-v="${v}"><b>${T[v][2]} ${T[v][0]}</b></button>`).join('')+`<button class="c t2" style="display:block;width:calc(100% - 40px)" data-a="go" data-v="backup"><b>Резервная копия 💾</b><span>Сохранить и восстановить записи</span></button>`}
+function backup(){return `<button class="back" data-a="go" data-v="more">‹ Ещё</button><div class="h"><h1>Резервная копия 💾</h1><p>Записи хранятся только на этом устройстве. Скопируйте копию и сохраните её в заметках, облаке или письме.</p></div>
+<div class="c"><b>Сохранить</b><textarea class="t" id="bk" readonly style="margin-top:8px">${esc(JSON.stringify({v:1,items:S.items}))}</textarea><div class="a"><button data-a="copy">Скопировать копию</button></div></div>
+<div class="c"><b>Восстановить</b><p>Вставьте ранее сохранённую копию. Текущие записи будут заменены.</p><textarea class="t" id="rs" style="margin-top:8px" placeholder="Вставьте копию сюда"></textarea><div class="a"><button data-a="restore">${S.rc?'Точно заменить все записи?':'Восстановить'}</button></div></div>`}
+function render(){
+ const q=$('#q')&&$('#q').value,v=S.view;
+ $('#app').innerHTML=v==='home'?home():v==='more'?more():v==='backup'?backup():section(v);
+ if(q&&$('#q'))$('#q').value=q;
+ const tab=['home','recipe','book','movie'].includes(v)?v:'more';
+ $('#nv').innerHTML=NAV.map(n=>`<button class="${n[0]===tab?'on':''}" data-a="go" data-v="${n[0]}"><svg ${SV}>${IC[n[0]]}</svg>${n[1]}</button>`).join('')}
+function sheet(t){
+ const o=$('#st')?[$('#st').value,$('#sx').value]:['',''];S.sheet=t;
+ $('#sh').innerHTML=`<div class="sb" role="dialog" aria-label="Новая запись"><h2>Новая запись</h2><div class="ch">${Object.keys(T).map(k=>`<button class="${k===t?'on':''}" data-a="stype" data-t="${k}">${T[k][1]}</button>`).join('')}</div>
+<input class="t" id="st" placeholder="Название" aria-label="Название"><textarea class="t" id="sx" placeholder="${t==='list'?'Пункты списка, по одному в строке':t==='recipe'?'Ингредиенты, шаги или ссылка':'Заметка (необязательно)'}" aria-label="Текст"></textarea>
+<div class="a"><button class="g" data-a="sclose">Отмена</button><button data-a="ssave">Сохранить</button></div></div>`;
+ $('#sh').hidden=false;$('#st').value=o[0];$('#sx').value=o[1];$('#st').focus()}
+function add(type,title,text){
+ const n=Date.now(),it={id:n,type,title,text,ts:n,status:ST[type]||''};
+ if(type==='list'){it.items=text.split('\n').map(s=>s.trim()).filter(Boolean).map(t=>({t,d:0}));it.text=''}
+ S.items.unshift(it);if(SEG[type])S.seg[type]=it.status;save()}
+function act(a,d,el){
+ if(a==='go'){S.view=d.v;S.rc=0;render();scrollTo(0,0)}
+ else if(a==='seg'){S.seg[S.view]=d.s;render()}
+ else if(a==='qt'){S.qt=d.t;render()}
+ else if(a==='qadd'){const v=$('#q').value.trim();if(!v)return $('#q').focus();add(S.qt,v,'');$('#q').value='';render();toast('Записано ✨')}
+ else if(a==='add')sheet(d.t);
+ else if(a==='stype')sheet(d.t);
+ else if(a==='sclose')$('#sh').hidden=true;
+ else if(a==='ssave'){const ti=$('#st').value.trim(),tx=$('#sx').value.trim(),t=S.sheet;
+  if(!ti&&!tx)return $('#st').focus();
+  add(t,ti||(t==='list'?'Список':tx.split('\n')[0].slice(0,60)),tx);$('#sh').hidden=true;render();toast('Сохранено ✨')}
+ else if(a==='move'){const it=S.items.find(i=>i.id==d.id);if(!it)return;
+  if(it.type==='recipe')it.status=it.status==='new'?'book':'new';else{it.status=it.status==='want'?'done':'want';it.doneTs=Date.now()}
+  save();render();
+  toast(it.type==='recipe'?(it.status==='book'?'Рецепт в книге рецептов 🍰':'Рецепт вернулся в «Новые»'):it.status==='done'?(it.type==='book'?'Отмечено как прочитанное 📖':'Отмечено как просмотренное 🎬'):'Вернулось в «Хочу»')}
+ else if(a==='del'){const i=S.items.findIndex(x=>x.id==d.id);if(i<0)return;S.undo={it:S.items[i],i};S.items.splice(i,1);save();render();toast('Удалено',1)}
+ else if(a==='undo'&&S.undo){S.items.splice(S.undo.i,0,S.undo.it);S.undo=null;save();render();$('#ts').hidden=true}
+ else if(a==='copy'){const t=$('#bk');t.select();let ok=0;try{navigator.clipboard.writeText(t.value);ok=1}catch(e){}try{ok=document.execCommand('copy')||ok}catch(e){}toast(ok?'Копия скопирована':'Выделено: нажмите «Копировать» в меню')}
+ else if(a==='restore'){
+  if(!S.rc){if(!$('#rs').value.trim())return toast('Сначала вставьте копию');S.rc=1;return render()}
+  try{const j=JSON.parse($('#rs').value);if(!Array.isArray(j.items)||j.items.some(i=>!T[i.type]||!i.title))throw 0;S.items=j.items;S.rc=0;save();render();toast('Записи восстановлены 🌸')}catch(e){S.rc=0;render();toast('Не удалось прочитать копию')}}}
+document.addEventListener('click',e=>{const b=e.target.closest('[data-a]');if(b)act(b.dataset.a,b.dataset,b)});
+document.addEventListener('change',e=>{const c=e.target.dataset.ck;if(!c)return;const[id,i]=c.split(':'),it=S.items.find(x=>x.id==id);if(it){it.items[i].d=e.target.checked?1:0;save();render()}});
+document.addEventListener('keydown',e=>{if(e.key!=='Enter')return;
+ if(e.target.id==='q')act('qadd',{});
+ else if(e.target.dataset.add){const it=S.items.find(x=>x.id==e.target.dataset.add),v=e.target.value.trim();if(it&&v){it.items.push({t:v,d:0});save();render()}}});
+load();render();
+if("serviceWorker" in navigator)addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));
+try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist()}catch(e){}
+</script>
+</body>
+</html>
